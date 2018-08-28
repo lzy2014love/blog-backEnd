@@ -19,19 +19,14 @@ export interface BizConfig {
 export default (appInfo: EggAppInfo) => {
   const config = {} as PowerPartial<EggAppConfig> & BizConfig
 
-  // app special config
-  config.sourceUrl = `https://github.com/eggjs/examples/tree/master/${appInfo.name}`
-
-  // override config from framework / plugin
-  // use for cookie sign key, should change to your own and keep security
-  config.keys = appInfo.name + '_blog-backEnd'
-  config.view = {
-    defaultViewEngine: 'nunjucks',
-    defaultExtension: '.tpl',
-    mapping: {
-      '.tpl': 'nunjucks',
-    },
+  // 数据库配置
+  config.sequelize = {
+    dialect: 'mysql',
+    host: '127.0.0.1',
+    port: 3306,
+    database: 'blog_development',
   }
+  // alinode配置
   config.alinode = {
     server: 'agentserver.node.aliyun.com:8080',
     appid: '36681',
@@ -43,16 +38,30 @@ export default (appInfo: EggAppInfo) => {
     error_log: ['/home/lzy/egg_error_log'],
     packages: ['/home/lzy/blog-backEnd/package.json'],
   }
-  config.news = {
-    pageSize: 30,
-    serverUrl: 'https://hacker-news.firebaseio.com/v0/',
+  // use for cookie sign key, should change to your own and keep security
+  config.keys = appInfo.name + '_blog-backEnd'
+  // 模版引擎配置
+  config.view = {
+    defaultViewEngine: 'nunjucks',
+    defaultExtension: '.tpl',
+    mapping: {
+      '.tpl': 'nunjucks',
+    },
   }
   config.siteFile = {
     './favicon': readFileSync(join(appInfo.baseDir, 'app/public/favicon.png')),
   }
-
-  // add your config here
+  // 全局中间件
   config.middleware = ['errorHandler']
+
+  // 以下是业务相关配置
+  // app special config
+  config.sourceUrl = `https://github.com/eggjs/examples/tree/master/${appInfo.name}`
+
+  config.news = {
+    pageSize: 30,
+    serverUrl: 'https://hacker-news.firebaseio.com/v0/',
+  }
 
   return config
 }
