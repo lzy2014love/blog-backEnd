@@ -1,21 +1,10 @@
 import { Controller } from 'egg'
 
-export default class NewsController extends Controller {
-  public async list() {
+export default class AuthController extends Controller {
+  public async getToken() {
     const { ctx, config } = this
-    const pageSize = config.news.pageSize
-    const page = parseInt(ctx.query.page, 10) || 1
-    const idList = await ctx.service.news.getTopStories(page, pageSize)
 
-    /**
-     * git itemInfo parallel
-     */
-    const newList = await Promise.all(idList.map((id) => ctx.service.news.getItem(id)))
-    await ctx.render('news/list.tpl', {
-      list: newList,
-      page,
-      pageSize,
-    })
+    ctx.body = 
   }
 
   public async detail() {

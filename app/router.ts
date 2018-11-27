@@ -1,6 +1,8 @@
 import { Application } from 'egg'
 
 export default (app: Application) => {
-  const { router } = app
-  router.redirect('/', '/news')
+  const { router, controller } = app
+  router.post('/auth', controller.auth.getToken)
+  
+  
 }

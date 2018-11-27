@@ -2,10 +2,10 @@
 // Do not modify this file!!!!!!!!!
 
 import 'egg'; // Make sure ts to import egg declaration at first
-import Auth from '../../../app/controller/auth';
+import User from '../../../app/model/user';
 
-declare module 'egg' {
-  interface IController {
-    auth: Auth;
+declare module 'sequelize' {
+  interface Sequelize {
+    User: ReturnType<typeof User>;
   }
 }
