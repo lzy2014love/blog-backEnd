@@ -2,7 +2,7 @@ import { EggAppConfig, EggAppInfo, PowerPartial } from 'egg'
 import { readFileSync } from 'fs'
 import { join } from 'path'
 
-// for config.{env}.ts
+// 提供给 config.{env}.ts 使用
 export type DefaultConfig = PowerPartial<EggAppConfig & BizConfig>
 
 interface NewsConfig {
@@ -10,7 +10,7 @@ interface NewsConfig {
   serverUrl: string
 }
 
-// app special config scheme
+// 应用本身的配置 Scheme
 export interface BizConfig {
   sourceUrl: string
   news: NewsConfig
@@ -20,11 +20,23 @@ export default (appInfo: EggAppInfo) => {
   const config = {} as PowerPartial<EggAppConfig> & BizConfig
 
   // 数据库配置
-  config.sequelize = {
-    dialect: 'mysql',
-    host: '127.0.0.1',
-    port: 3306,
-    database: 'blog_development',
+  config.mysql = {
+    client: {
+      // host
+      host: '127.0.0.1',
+      // 端口号
+      port: '3306',
+      // 用户名
+      user: 'root',
+      // 密码
+      password: '123456',
+      // 数据库名
+      database: 'blog',
+    },
+    // 是否加载到 app 上，默认开启
+    app: true,
+    // 是否加载到 agent 上，默认关闭
+    agent: false,
   }
   // alinode配置
   config.alinode = {
@@ -52,7 +64,7 @@ export default (appInfo: EggAppInfo) => {
     './favicon': readFileSync(join(appInfo.baseDir, 'app/public/favicon.png')),
   }
   // 全局中间件
-  config.middleware = ['errorHandler']
+  // config.middleware = ['errorHandler']
 
   // 以下是业务相关配置
   // app special config

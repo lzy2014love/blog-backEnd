@@ -18,9 +18,9 @@ const plugin: EggPlugin = {
     enable: true,
     package: 'egg-passport-local',
   },
-  sequelize: {
+  mysql: {
     enable: true,
-    package: 'egg-sequelize',
+    package: 'egg-mysql',
   },
 }
 

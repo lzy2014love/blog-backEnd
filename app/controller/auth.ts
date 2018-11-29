@@ -2,24 +2,20 @@ import { Controller } from 'egg'
 
 export default class AuthController extends Controller {
   public async getToken() {
-    const { ctx, config } = this
+    const { ctx, app } = this
+    try {
+      const user = await app.mysql.query('select * from db1 where id = 1')
+      // throw new Error('sfsfsfsfas')
+      console.log('====================================')
+      console.log(user)
+      console.log('====================================')
+      ctx.body = user
 
-    ctx.body = 
-  }
-
-  public async detail() {
-    const { ctx } = this
-    const id = ctx.params.id
-    const newsInfo = await ctx.service.news.getItem(id)
-
-    /**
-     * get comment parallel
-     */
-    const commentList = await Promise.all(newsInfo.kids.map((_id) => ctx.service.news.getItem(_id)))
-    await ctx.render('news/datail', {
-      item: newsInfo,
-      comments: commentList,
-    })
+    } catch (error) {
+      console.log('====================================')
+      console.log(error)
+      console.log('====================================')
+    }
   }
 
   /**

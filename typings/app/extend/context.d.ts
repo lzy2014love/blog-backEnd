@@ -2,10 +2,8 @@
 // Do not modify this file!!!!!!!!!
 
 import 'egg'; // Make sure ts to import egg declaration at first
-import User from '../../../app/model/user';
-
+import ExtendContext from '../../../app/extend/context';
 declare module 'egg' {
-  interface IModel {
-    User: ReturnType<typeof User>;
-  }
+  type ExtendContextType = typeof ExtendContext;
+  interface Context extends ExtendContextType { }
 }

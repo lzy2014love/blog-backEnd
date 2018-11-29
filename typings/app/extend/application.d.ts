@@ -2,7 +2,7 @@
 // Do not modify this file!!!!!!!!!
 
 import 'egg'; // Make sure ts to import egg declaration at first
-import ExtendApplication from '../../../app/extend/application';
+import ExtendApplication from '../../../app/extend/context';
 declare module 'egg' {
   type ExtendApplicationType = typeof ExtendApplication;
   interface Application extends ExtendApplicationType { }

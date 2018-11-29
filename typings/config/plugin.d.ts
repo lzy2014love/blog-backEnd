@@ -7,4 +7,4 @@ import 'egg-view-nunjucks';
 import 'egg-validate';
 import 'egg-passport';
 import 'egg-passport-local';
-import 'egg-sequelize';
+import 'egg-mysql';

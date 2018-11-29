@@ -10,9 +10,7 @@ export default (app: Application) => {
     //   })
     // }
   })
-
   app.on('server', () => {
     console.timeEnd('app启动用时')
   })
-  // app.ready
 }
