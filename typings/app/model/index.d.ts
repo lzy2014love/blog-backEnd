@@ -1,11 +1,11 @@
-// This file was auto created by egg-ts-helper
+// This file is created by egg-ts-helper
 // Do not modify this file!!!!!!!!!
 
-import 'egg'; // Make sure ts to import egg declaration at first
-import User from '../../../app/model/user';
+import 'egg';
+import ExportUser from '../../../app/model/user';
 
 declare module 'egg' {
   interface IModel {
-    User: ReturnType<typeof User>;
+    User: ReturnType<typeof ExportUser>;
   }
 }

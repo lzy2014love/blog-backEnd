@@ -22,6 +22,10 @@ const plugin: EggPlugin = {
     enable: true,
     package: 'egg-mysql',
   },
+  routerPlus: {
+    enable: true,
+    package: 'egg-router-plus',
+  },
 }
 
 export default plugin

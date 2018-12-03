@@ -1,11 +1,13 @@
-// This file was auto created by egg-ts-helper
+// This file is created by egg-ts-helper
 // Do not modify this file!!!!!!!!!
 
-import 'egg'; // Make sure ts to import egg declaration at first
-import Auth from '../../../app/controller/auth';
+import 'egg';
+import ExportAuth from '../../../app/controller/auth';
+import ExportUser from '../../../app/controller/user';
 
 declare module 'egg' {
   interface IController {
-    auth: Auth;
+    auth: ExportAuth;
+    user: ExportUser;
   }
 }

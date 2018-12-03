@@ -9,6 +9,7 @@ export default class AuthController extends Controller {
       console.log('====================================')
       console.log(user)
       console.log('====================================')
+      ctx.state = 400
       ctx.body = user
 
     } catch (error) {
