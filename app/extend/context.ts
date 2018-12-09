@@ -16,12 +16,12 @@ export default {
    * @param code 状态码
    * @param msg 提示消息
    */
-  createResponse(data: JSONObject, code = 0, msg = 'ok') {
+  createResponse(data: JSONObject, code = 0, msg = 'ok'): ApiResponse {
     return {
       code,
       msg,
       data,
-    } as ApiResponse
+    }
   },
   /**
    * 返回数据的便捷函数

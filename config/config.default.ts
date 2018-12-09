@@ -85,14 +85,16 @@ export default (appInfo: EggAppInfo) => {
 
   // 以下是业务相关配置
   // app special config
-  config.sourceUrl = `https://github.com/eggjs/examples/tree/master/${appInfo.name}`
+  config.sourceUrl = `https://github.com/eggjs/examples/tree/master/${
+    appInfo.name
+  }`
   config.session_secret = 'blog-backEnd'
   config.news = {
     pageSize: 30,
     serverUrl: 'https://hacker-news.firebaseio.com/v0/',
   }
   config.pagination = {
-    defaultPageIndex: 1,
+    defaultPageIndex: 0,
     defaultPageSize: 10,
     maxPageSize: 50,
   }

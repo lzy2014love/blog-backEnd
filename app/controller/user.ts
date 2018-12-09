@@ -1,6 +1,6 @@
 import { Controller } from 'egg'
-
-import { userValidate } from '../validate/user'
+import { PaginationData } from '../dto/common'
+import { createUserRule, userIdRule } from '../validate/user'
 
 export default class UserController extends Controller {
   /**
@@ -8,8 +8,17 @@ export default class UserController extends Controller {
    */
   public async index() {
     const { ctx } = this
-    const userList = await ctx.service.user.getUserList()
-    ctx.send(userList)
+    const { pagination } = ctx
+    const userList = await ctx.service.user.getUserList(pagination)
+    const { pageSize, pageIndex } = pagination
+    const paginationData: PaginationData = {
+      pageSize,
+      pageIndex,
+      // TODO
+      total: 100,
+      list: userList,
+    }
+    ctx.send(paginationData)
   }
   /**
    * 新建用户
@@ -19,11 +28,40 @@ export default class UserController extends Controller {
     const userData = ctx.request.body
     // 校验 `ctx.request.body` 是否符合我们预期的格式
     // 如果参数校验未通过，将会抛出一个 status = 422 的异常
-    ctx.validate(userValidate, userData)
+    ctx.validate(createUserRule, userData)
     const now = this.app.mysql.literals.now
     userData.create_time = now
     userData.update_time = now
     const userId = await ctx.service.user.createUser(userData)
     ctx.send({ userId }, 201)
+  }
+  /**
+   * async show
+   */
+  public async show() {
+    const { ctx } = this
+    // string 装换成 number
+    const userId = Number(ctx.params.userId)
+    ctx.validate(userIdRule, { userId })
+    const userInfo = await ctx.service.user.getUserById(userId)
+    ctx.send(userInfo)
+  }
+  public async destroy() {
+    const { ctx } = this
+    // string 装换成 number
+    const userId = Number(ctx.params.userId)
+    ctx.validate(userIdRule, { userId })
+    const userInfo = await ctx.service.user.destroyUserById(userId)
+    ctx.send(userInfo)
+  }
+  public async update() {
+    const { ctx } = this
+    // string 装换成 number
+    const userId = Number(ctx.params.userId)
+    ctx.validate(userIdRule, { userId })
+    const newUserInfo = ctx.request.body
+    ctx.validate(createUserRule, newUserInfo)
+    const userInfo = await ctx.service.user.updateUserById(userId, newUserInfo)
+    ctx.send(userInfo)
   }
 }
