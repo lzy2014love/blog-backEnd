@@ -29,6 +29,12 @@ export default (appInfo: EggAppInfo) => {
   const config = {} as PowerPartial<EggAppConfig> & BizConfig
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_blog-backEnd'
+  config.session = {
+    key: 'EGG_SESS',
+    maxAge: 24 * 3600 * 1000 * 7, // 7 天
+    httpOnly: true,
+    encrypt: true,
+  }
   config.security = {
     csrf: {
       // 默认为 false，当设置为 true 时，将会把 csrf token 保存到 Session 中

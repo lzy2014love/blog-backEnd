@@ -11,22 +11,9 @@ export default class UserService extends Service {
     return result.insertId
   }
   /**
-   * 获取用户总数
-   */
-  public async getUserCount(): Promise<number> {
-    // const result = await this.app.mysql.query(`select sql_calc_found_rows \`userId\`, \`name\` from \`user\` limit 0,1;
-    // select found_rows() as total;`)
-    // return result[0].total
-    const result = await this.app.mysql.query(`select \`name\` from user;select \`userId\` from user;`)
-    console.log('====================================')
-    console.log(111, result)
-    console.log('====================================')
-    return result
-  }
-  /**
    * 获取用户列表
    */
-  public async getUserList(pagination: Pagination): Promise<any> {
+  public async getUserList(pagination: Pagination) {
     const result = await this.app.mysql.select('user', {
       columns: [
         'userId',
@@ -45,7 +32,7 @@ export default class UserService extends Service {
   /**
    * 获取某id用户信息
    */
-  public async getUserById(userId: number): Promise<any> {
+  public async getUserById(userId: number) {
     const result = await this.app.mysql.select('user', {
       columns: [
         'userId',
@@ -63,7 +50,7 @@ export default class UserService extends Service {
   /**
    * 根据id删除用户
    */
-  public async destroyUserById(userId: number): Promise<any> {
+  public async destroyUserById(userId: number) {
     const result = await this.app.mysql.delete('user', {
       userId,
     })
@@ -71,8 +58,10 @@ export default class UserService extends Service {
   }
   /**
    * 根据id修改用户信息
+   * @param userId 用户id
+   * @param row 个人用户信息
    */
-  public async updateUserById(userId: number, row: PlainObject): Promise<any> {
+  public async updateUserById(userId: number, row: PlainObject) {
     const result = await this.app.mysql.update('user', row, {
       where: { userId },
     })

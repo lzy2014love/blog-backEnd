@@ -7,10 +7,12 @@ export default class UserController extends Controller {
    * 用户列表
    */
   public async index() {
-    const { ctx } = this
+    const { ctx, app } = this
     const { pagination } = ctx
-    const userList = await ctx.service.user.getUserList(pagination)
-    const total = await ctx.service.user.getUserCount()
+    const [userList, total] = await Promise.all([
+      ctx.service.user.getUserList(pagination),
+      app.getCount('user'),
+    ])
     const { pageSize, pageIndex } = pagination
     const paginationData: PaginationData = {
       pageSize,
@@ -35,16 +37,17 @@ export default class UserController extends Controller {
     const userId = await ctx.service.user.createUser(userData)
     ctx.send({ userId }, 201)
   }
-  /**
-   * async show
-   */
   public async show() {
     const { ctx } = this
     // string 装换成 number
     const userId = Number(ctx.params.userId)
     ctx.validate(userIdRule, { userId })
     const userInfo = await ctx.service.user.getUserById(userId)
-    ctx.send(userInfo)
+    if (userInfo.length === 0) {
+      ctx.sendError('没有该用户', '$_row_not_found', 400)
+      return
+    }
+    ctx.send(userInfo[0])
   }
   public async destroy() {
     const { ctx } = this
