@@ -1,17 +1,17 @@
 import { IncomingHttpHeaders } from 'http'
 
-interface mysql {
+interface Mysql {
   literals: any
-  insert(tableName: string, options?: PlainObjet): Promise<any>
-  get(tableName: string, options?: PlainObjet): Promise<any>
-  select(tableName: string, options?: PlainObjet): Promise<any>
-  update(tableName: string, options?: PlainObjet): Promise<any>
+  insert(tableName: string, options?: PlainObjet): Promise<PlainObjet>
+  get(tableName: string, options?: PlainObjet): Promise<PlainObjet[]>
+  select(tableName: string, options?: PlainObjet): Promise<PlainObjet[]>
+  update(tableName: string, options?: PlainObjet): Promise<PlainObjet>
   update(
     tableName: string,
     row: PlainObject,
     options?: PlainObjet,
-  ): Promise<any>
-  delete(tableName: string, options?: PlainObjet): Promise<any>
+  ): Promise<PlainObjet>
+  delete(tableName: string, options?: PlainObjet): Promise<PlainObjet>
   query(sql: string, values?: any): Promise<any>
   beginTansaction(): any
   beginTransactionScope(
@@ -36,6 +36,6 @@ declare module 'egg' {
   }
 
   interface Application {
-    mysql: mysql
+    mysql: Mysql
   }
 }

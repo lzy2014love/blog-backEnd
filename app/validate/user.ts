@@ -4,7 +4,7 @@ export const userIdRule = {
 
 export const updateUserRule = {
   password: 'string',
-  isAdmin: [0, 1],
+  userType: [0, 1],
   avatar: 'url',
   email: { type: 'email', required: false, allowEmpty: false },
 }

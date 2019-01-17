@@ -10,12 +10,12 @@ export default class UserController extends Controller {
     const { ctx } = this
     const { pagination } = ctx
     const userList = await ctx.service.user.getUserList(pagination)
+    const total = await ctx.service.user.getUserCount()
     const { pageSize, pageIndex } = pagination
     const paginationData: PaginationData = {
       pageSize,
       pageIndex,
-      // TODO
-      total: 100,
+      total,
       list: userList,
     }
     ctx.send(paginationData)

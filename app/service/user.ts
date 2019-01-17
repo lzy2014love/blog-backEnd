@@ -11,6 +11,19 @@ export default class UserService extends Service {
     return result.insertId
   }
   /**
+   * 获取用户总数
+   */
+  public async getUserCount(): Promise<number> {
+    // const result = await this.app.mysql.query(`select sql_calc_found_rows \`userId\`, \`name\` from \`user\` limit 0,1;
+    // select found_rows() as total;`)
+    // return result[0].total
+    const result = await this.app.mysql.query(`select \`name\` from user;select \`userId\` from user;`)
+    console.log('====================================')
+    console.log(111, result)
+    console.log('====================================')
+    return result
+  }
+  /**
    * 获取用户列表
    */
   public async getUserList(pagination: Pagination): Promise<any> {
@@ -19,7 +32,7 @@ export default class UserService extends Service {
         'userId',
         'name',
         'email',
-        'isAdmin',
+        'userType',
         'create_time',
         'update_time',
         'avatar',
@@ -38,7 +51,7 @@ export default class UserService extends Service {
         'userId',
         'name',
         'email',
-        'isAdmin',
+        'userType',
         'create_time',
         'update_time',
         'avatar',
