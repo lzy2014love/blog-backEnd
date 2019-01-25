@@ -14,9 +14,9 @@ const plugin: EggPlugin = {
     enable: true,
     package: 'egg-passport',
   },
-  passportLocal: {
+  passportJwt: {
     enable: true,
-    package: 'egg-passport-local',
+    package: 'egg-passport-jwt',
   },
   mysql: {
     enable: true,

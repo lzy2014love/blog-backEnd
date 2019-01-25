@@ -1,15 +1,17 @@
 import { Application } from 'egg'
 
 export default (app: Application) => {
-  const { router, controller, middleware, config } = app
+  const { router, controller, middleware, config, passport } = app
+  const jwt = passport.authenticate('jwt', { session: false, successReturnToOrRedirect: null })
   // '/api' 命名空间路由管理
   const apiRouter = router.namespace('/api')
-  const loginRequired = middleware.loginRequired()
+  // const loginRequired = middleware.loginRequired()
   const pagination = middleware.pagination(config.pagination)
   // 接口路由
 
   // 登录，登出模块
-  apiRouter.get('/token', loginRequired, controller.auth.getToken)
+  apiRouter.get('/token', jwt, controller.token.show)
+  apiRouter.del('/token', jwt, controller.token.destroy)
 
   // 用户模块
   /**

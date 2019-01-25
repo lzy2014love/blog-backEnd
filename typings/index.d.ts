@@ -20,8 +20,16 @@ declare module 'egg' {
     ): Promise<any>
   }
 
+  interface Passport {
+    verify: any
+    authenticate: any
+    serializeUser: any
+    deserializeUser: any
+  }
+
   interface Application {
     mysql: Mysql
+    passport: Passport
   }
 
   /**

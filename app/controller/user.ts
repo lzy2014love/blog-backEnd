@@ -9,9 +9,9 @@ export default class UserController extends Controller {
   public async index() {
     const { ctx, app } = this
     const { pagination } = ctx
-    const [userList, total] = await Promise.all([
-      ctx.service.user.getUserList(pagination),
+    const [total, userList] = await Promise.all([
       app.getCount('user'),
+      ctx.service.user.getUserList(pagination),
     ])
     const { pageSize, pageIndex } = pagination
     const paginationData: PaginationData = {

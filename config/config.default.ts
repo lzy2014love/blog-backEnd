@@ -16,7 +16,7 @@ interface Pagination {
 // 应用本身的配置 Scheme
 export interface BizConfig {
   sourceUrl: string
-  session_secret: string
+  secretKey: string
   news: NewsConfig
   pagination: Pagination
 }
@@ -28,9 +28,10 @@ export default (appInfo: EggAppInfo) => {
   // tslint:disable-next-line:no-object-literal-type-assertion
   const config = {} as PowerPartial<EggAppConfig> & BizConfig
   // use for cookie sign key, should change to your own and keep security
-  config.keys = appInfo.name + '_blog-backEnd'
+  config.keys = appInfo.name
+  config.secretKey = 'EGG_SESS'
   config.session = {
-    key: 'EGG_SESS',
+    key: config.secretKey,
     maxAge: 24 * 3600 * 1000 * 7, // 7 天
     httpOnly: true,
     encrypt: true,
@@ -42,6 +43,10 @@ export default (appInfo: EggAppInfo) => {
       // 忽略/api路径下所有请求
       ignore: '/api',
     },
+  }
+  // egg-passport-jwt配置
+  config.passportJwt = {
+    secret: config.secretKey,
   }
   // 数据库配置
   config.mysql = {
@@ -94,7 +99,6 @@ export default (appInfo: EggAppInfo) => {
   config.sourceUrl = `https://github.com/eggjs/examples/tree/master/${
     appInfo.name
   }`
-  config.session_secret = 'blog-backEnd'
   config.news = {
     pageSize: 30,
     serverUrl: 'https://hacker-news.firebaseio.com/v0/',
