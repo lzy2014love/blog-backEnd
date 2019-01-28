@@ -1,19 +1,16 @@
-import { Application } from 'egg'
+import { Application, Context } from 'egg'
 
 export default (app: Application) => {
-  const { router, controller, middleware, config, passport } = app
-  const jwt = passport.authenticate('jwt', { session: false, successReturnToOrRedirect: null })
+  const { router, controller, middleware, config, jwt } = app
   // '/api' 命名空间路由管理
   const apiRouter = router.namespace('/api')
   // const loginRequired = middleware.loginRequired()
   const pagination = middleware.pagination(config.pagination)
-  // 接口路由
-
-  // 登录，登出模块
-  apiRouter.get('/token', jwt, controller.token.show)
-  apiRouter.del('/token', jwt, controller.token.destroy)
 
   // 用户模块
+  // 登录，登出
+  apiRouter.post('/login', controller.user.login)
+  apiRouter.post('/logout', jwt, controller.user.logout)
   /**
    * 获取所有用户信息
    */
@@ -37,7 +34,7 @@ export default (app: Application) => {
   /**
    * 接口404
    */
-  // router.all('*', ctx => {
-  //   ctx.sendError({msg: '', code: 404})
-  // })
+  router.all('*', ((ctx: Context) => {
+    ctx.sendError('接口找不到', '$_api_not_found', 404)
+  }) as any)
 }

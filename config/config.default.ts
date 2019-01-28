@@ -44,9 +44,20 @@ export default (appInfo: EggAppInfo) => {
       ignore: '/api',
     },
   }
-  // egg-passport-jwt配置
-  config.passportJwt = {
+  // egg-jwt配置
+  config.jwt = {
     secret: config.secretKey,
+    credentialsRequired: false,
+    // getToken(ctx: Context) {
+    //   const token = ctx.cookies.get('token')
+    //   console.log('====================================')
+    //   console.log(111, token, ctx.cookies, ctx.cookies.get('EGG_SESS'))
+    //   console.log('====================================')
+    //   if (token) {
+    //     return token
+    //   }
+    //   return null
+    // },
   }
   // 数据库配置
   config.mysql = {
@@ -95,7 +106,6 @@ export default (appInfo: EggAppInfo) => {
   config.middleware = ['errorHandler']
 
   // 以下是业务相关配置
-  // app special config
   config.sourceUrl = `https://github.com/eggjs/examples/tree/master/${
     appInfo.name
   }`

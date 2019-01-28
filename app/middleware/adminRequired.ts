@@ -4,7 +4,7 @@ import { Context } from 'egg'
 export default function adminRequired(): any {
   return async (ctx: Context, next: () => Promise<any>) => {
     // 管理员限制
-    if (ctx.user && ctx.user.isAdmin) {
+    if (ctx.user && ctx.user.userType === 0) {
       ctx.sendError('权限不足', '$_ADMIN_REQUIRED', 403)
       return
     }

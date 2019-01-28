@@ -1,4 +1,5 @@
 import { Controller } from 'egg'
+import { checkPasswordResult } from '../const/enum'
 import { PaginationData } from '../dto/common'
 import { createUserRule, userIdRule } from '../validate/user'
 
@@ -26,14 +27,14 @@ export default class UserController extends Controller {
    * 新建用户
    */
   public async create() {
-    const { ctx } = this
+    const { ctx, app } = this
     const userData = ctx.request.body
     // 校验 `ctx.request.body` 是否符合我们预期的格式
     // 如果参数校验未通过，将会抛出一个 status = 422 的异常
     ctx.validate(createUserRule, userData)
-    const now = this.app.mysql.literals.now
-    userData.create_time = now
-    userData.update_time = now
+    const now = app.mysql.literals.now
+    userData.create_time = userData.update_time = now
+    userData.password = await app.createHash(userData.password)
     const userId = await ctx.service.user.createUser(userData)
     ctx.send({ userId }, 201)
   }
@@ -43,11 +44,11 @@ export default class UserController extends Controller {
     const userId = Number(ctx.params.userId)
     ctx.validate(userIdRule, { userId })
     const userInfo = await ctx.service.user.getUserById(userId)
-    if (userInfo.length === 0) {
-      ctx.sendError('没有该用户', '$_row_not_found', 400)
+    if (userInfo) {
+      ctx.send(userInfo)
       return
     }
-    ctx.send(userInfo[0])
+    ctx.sendError('没有该用户', '$_row_not_found', 400)
   }
   public async destroy() {
     const { ctx } = this
@@ -66,5 +67,57 @@ export default class UserController extends Controller {
     ctx.validate(createUserRule, newUserInfo)
     const userInfo = await ctx.service.user.updateUserById(userId, newUserInfo)
     ctx.send(userInfo)
+  }
+  public async login() {
+    const { ctx, app } = this
+    const { name, password } = ctx.req.body
+    const checkResult = await ctx.service.user.checkPassword(name, password)
+    if (checkResult === checkPasswordResult.USER_NOT_FOUND) {
+      ctx.sendError('找不到该用户', '$_user_not_found')
+      return
+    }
+    if (checkResult === checkPasswordResult.CHECK_FAIL) {
+      ctx.sendError('密码不正确', '$_password_check_fail')
+      return
+    }
+    ctx.login(checkResult)
+    const { userId, email, userType } = checkResult
+    const token = app.jwt.sign(
+      {
+        userId,
+        email,
+        userType,
+      },
+      app.config.jwt.secret,
+      {
+        expiresIn: '30d',
+      },
+    )
+    console.log('====================================')
+    console.log(111, token, JSON.stringify(ctx.user))
+    console.log('====================================')
+
+    ctx.cookies.set('token', token, {
+      path: '/',
+      maxAge: 1000 * 60 * 60 * 24 * 30, // cookie 有效期30天
+      httpOnly: false,
+      overwrite: true,
+      signed: false,
+    })
+    ctx.send({
+      token,
+    })
+  }
+
+  /**
+   * async user
+   */
+  public async logout() {
+    const { ctx } = this
+    console.log('====================================')
+    console.log(ctx.isAuthenticated())
+    console.log('====================================')
+    ctx.logout()
+    ctx.send({ msg: 'ok' })
   }
 }

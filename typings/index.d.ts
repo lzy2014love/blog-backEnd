@@ -30,6 +30,7 @@ declare module 'egg' {
   interface Application {
     mysql: Mysql
     passport: Passport
+    jwt: any
   }
 
   /**

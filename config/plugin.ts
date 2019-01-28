@@ -14,9 +14,9 @@ const plugin: EggPlugin = {
     enable: true,
     package: 'egg-passport',
   },
-  passportJwt: {
+  jwt: {
     enable: true,
-    package: 'egg-passport-jwt',
+    package: 'egg-jwt',
   },
   mysql: {
     enable: true,
