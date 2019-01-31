@@ -17,15 +17,7 @@ export default class UserService extends Service {
    */
   public async getUserList(pagination: Pagination) {
     const result = await this.app.mysql.select('user', {
-      columns: [
-        'userId',
-        'name',
-        'email',
-        'userType',
-        'create_time',
-        'update_time',
-        'avatar',
-      ],
+      columns: ['userId', 'name', 'email', 'userType', 'create_time', 'update_time', 'avatar'],
       limit: pagination.pageSize,
       offset: pagination.pageIndex,
     })
@@ -96,16 +88,12 @@ export default class UserService extends Service {
    * @param fieldValue 字段值
    * @param returnPassword 是否返回`password`，默认不返回
    */
-  private async getUser(field: string, fieldValue: number | string, returnPassword: boolean) {
-    const columns = [
-      'userId',
-      'name',
-      'email',
-      'userType',
-      'create_time',
-      'update_time',
-      'avatar',
-    ]
+  private async getUser(
+    field: string,
+    fieldValue: number | string,
+    returnPassword: boolean,
+  ): Promise<PlainObject<any> | null> {
+    const columns = ['userId', 'name', 'email', 'userType', 'create_time', 'update_time', 'avatar']
     if (returnPassword) {
       columns.push('password')
     }
@@ -113,7 +101,7 @@ export default class UserService extends Service {
       columns,
       where: {
         [field]: fieldValue,
-       },
+      },
     })
     return result[0] || null
   }

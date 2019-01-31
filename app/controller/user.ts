@@ -1,4 +1,5 @@
 import { Controller } from 'egg'
+import { checkPasswordResultMap } from '../const/displayMap'
 import { checkPasswordResult } from '../const/enum'
 import { PaginationData } from '../dto/common'
 import { createUserRule, userIdRule } from '../validate/user'
@@ -10,10 +11,7 @@ export default class UserController extends Controller {
   public async index() {
     const { ctx, app } = this
     const { pagination } = ctx
-    const [total, userList] = await Promise.all([
-      app.getCount('user'),
-      ctx.service.user.getUserList(pagination),
-    ])
+    const [total, userList] = await Promise.all([app.getCount('user'), ctx.service.user.getUserList(pagination)])
     const { pageSize, pageIndex } = pagination
     const paginationData: PaginationData = {
       pageSize,
@@ -44,11 +42,11 @@ export default class UserController extends Controller {
     const userId = Number(ctx.params.userId)
     ctx.validate(userIdRule, { userId })
     const userInfo = await ctx.service.user.getUserById(userId)
-    if (userInfo) {
+    if (userInfo !== null) {
       ctx.send(userInfo)
       return
     }
-    ctx.sendError('没有该用户', '$_row_not_found', 400)
+    ctx.sendError(checkPasswordResultMap[checkPasswordResult.USER_NOT_FOUND], '$_user_not_found', 400)
   }
   public async destroy() {
     const { ctx } = this
@@ -73,11 +71,11 @@ export default class UserController extends Controller {
     const { name, password } = ctx.req.body
     const checkResult = await ctx.service.user.checkPassword(name, password)
     if (checkResult === checkPasswordResult.USER_NOT_FOUND) {
-      ctx.sendError('找不到该用户', '$_user_not_found')
+      ctx.sendError(checkPasswordResultMap[checkResult], '$_user_not_found')
       return
     }
     if (checkResult === checkPasswordResult.CHECK_FAIL) {
-      ctx.sendError('密码不正确', '$_password_check_fail')
+      ctx.sendError(checkPasswordResultMap[checkResult], '$_password_check_fail')
       return
     }
     ctx.login(checkResult)

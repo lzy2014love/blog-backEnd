@@ -2457,14 +2457,6 @@ egg-onerror@^2.1.0:
     mustache "^2.3.0"
     stack-trace "^0.0.10"
 
-egg-passport-jwt@^0.1.0:
-  version "0.1.0"
-  resolved "http://registry.npm.taobao.org/egg-passport-jwt/download/egg-passport-jwt-0.1.0.tgz#b577029eab560fa04d9a5f4216e7aeb7f3b0a8d3"
-  integrity sha1-tXcCnqtWD6BNml9CFueut/OwqNM=
-  dependencies:
-    debug "^3.1.0"
-    passport-jwt "^4.0.0"
-
 egg-passport@^2.0.1:
   version "2.0.1"
   resolved "http://registry.npm.taobao.org/egg-passport/download/egg-passport-2.0.1.tgz#ac98233f5e6eb563ed730fd7347c58ab64fb8474"
@@ -3947,7 +3939,7 @@ jsonp-body@^1.0.0:
   resolved "http://registry.npm.taobao.org/jsonp-body/download/jsonp-body-1.0.0.tgz#e610fb6fcea79cf0cc9f27baa7b56377d4b0bb36"
   integrity sha1-5hD7b86nnPDMnye6p7Vjd9SwuzY=
 
-jsonwebtoken@^8.1.0, jsonwebtoken@^8.2.0, jsonwebtoken@^8.3.0:
+jsonwebtoken@^8.1.0, jsonwebtoken@^8.3.0:
   version "8.4.0"
   resolved "http://registry.npm.taobao.org/jsonwebtoken/download/jsonwebtoken-8.4.0.tgz#8757f7b4cb7440d86d5e2f3becefa70536c8e46a"
   integrity sha1-h1f3tMt0QNhtXi877O+nBTbI5Go=
@@ -5133,15 +5125,7 @@ pascalcase@^0.1.1:
   resolved "http://registry.npm.taobao.org/pascalcase/download/pascalcase-0.1.1.tgz#b363e55e8006ca6fe21784d2db22bd15d7917f14"
   integrity sha1-s2PlXoAGym/iF4TS2yK9FdeRfxQ=
 
-passport-jwt@^4.0.0:
-  version "4.0.0"
-  resolved "http://registry.npm.taobao.org/passport-jwt/download/passport-jwt-4.0.0.tgz#7f0be7ba942e28b9f5d22c2ebbb8ce96ef7cf065"
-  integrity sha1-fwvnupQuKLn10iwuu7jOlu988GU=
-  dependencies:
-    jsonwebtoken "^8.2.0"
-    passport-strategy "^1.0.0"
-
-passport-strategy@1.x.x, passport-strategy@^1.0.0:
+passport-strategy@1.x.x:
   version "1.0.0"
   resolved "http://registry.npm.taobao.org/passport-strategy/download/passport-strategy-1.0.0.tgz#b5539aa8fc225a3d1ad179476ddf236b440f52e4"
   integrity sha1-tVOaqPwiWj0a0XlHbd8ja0QPUuQ=
